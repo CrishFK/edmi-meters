@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+  
+  database:
+    build: ./edmi-meters-db
+    container_name: edmi-meters-db
+    volumes:
+      - ./edmi-meters-db:/docker-entrypoint-initdb.d/edmi-meters-db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: Edmim3t3rs
+    ports:
+      - "3306:3306"
+
+  backend:
+    build: ./edmi-meters-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "9084:80"
+      - "9085:423"
+    depends_on:
+      - "database"
+
+  frontend:
+    build: ./edmi-meters-frontend
+    container_name: edmi-meters-frontend
+    volumes:
+      - './edmi-meters-frontend:/usr/src/app' 
+    ports: 
+      - '4200:4200'
+    command: > 
+      bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+    depends_on:
+      - "backend"
