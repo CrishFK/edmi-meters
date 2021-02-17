@@ -1,16 +1,14 @@
+using edmi_meters_backend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace edmi_meters_backend
 {
@@ -32,6 +30,17 @@ namespace edmi_meters_backend
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "edmi_meters_backend", Version = "v1" });
             });
+
+            //services.AddControllers(options =>
+            //{
+            //    options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
+            //    options.OutputFormatters.Add(new SystemTextJsonOutputFormatter(new JsonSerializerOptions(JsonSerializerDefaults.Web)
+            //    {
+            //        ReferenceHandler = ReferenceHandler.Preserve,
+            //    }));
+            //});
+
+            services.AddDbContext<EdmiMeterDBContext>(options => options.UseMySQL(Configuration.GetConnectionString("EdmiMeterContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

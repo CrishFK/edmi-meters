@@ -1,0 +1,117 @@
+<!-- Toolbar -->
+<div class="toolbar" role="banner">
+  <img
+    width="100"
+    src="https://www.edmi-meters.com/wordpress/wp-content/themes/edmi/images/logo-edmi.png"
+  />
+</div>
+
+<div class="content" role="main">
+
+  <!-- Highlight Card -->
+  <div class="card highlight-card card-small">
+    <img
+    width="100"
+    src="https://www.edmi-meters.com/wordpress/wp-content/themes/edmi/images/logo-edmi.png"
+    />
+    <span>{{ title }}</span>
+  </div>
+
+  <mat-tab-group>
+
+    <mat-tab label="Insert Meter">
+      <mat-form-field appearance="fill"><mat-label>Choose Meter</mat-label><mat-select required
+        [(ngModel)]="meterType" 
+        (selectionChange)="onChange()">
+          <mat-option 
+            *ngFor="let meter of meterList" 
+            [value]="meter">
+              {{meter}}
+          </mat-option>
+      </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill"><input matInput #input type="number" placeholder="Serial Number" [(ngModel)]="serial"> </mat-form-field>
+      <mat-form-field appearance="fill"><input matInput #input placeholder="FirmwareVersion" [(ngModel)]="firmwareVersion"> </mat-form-field>
+      <mat-form-field appearance="fill"><input matInput #input placeholder="State" [(ngModel)]="state"> </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="showGatewayParameters"><input matInput #input placeholder="IP" [(ngModel)]="ip"> </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="showGatewayParameters"><input matInput #input placeholder="Port" [(ngModel)]="port"> </mat-form-field>
+      <div class="buttonGroup"><button mat-flat-button color="primary"(click)="addMeter()">Insert Meter</button></div>
+    </mat-tab>
+
+
+    <mat-tab label="Get Meters">
+      <mat-tab-group>
+
+        <mat-tab label="Get All">
+          <mat-form-field appearance="fill"><mat-label>Choose Meter</mat-label><mat-select required
+            [(ngModel)]="meterType">
+              <mat-option 
+                *ngFor="let meter of meterList" 
+                [value]="meter">
+                  {{meter}}
+              </mat-option>
+          </mat-select>
+          </mat-form-field>
+          <button mat-flat-button color="primary"(click)="getMeter()">Get Meter</button>
+        </mat-tab>
+    
+        <mat-tab label="Get By Serial">
+          <mat-form-field appearance="fill"><mat-label>Choose Meter</mat-label><mat-select required
+            [(ngModel)]="meterType">
+              <mat-option 
+                *ngFor="let meter of meterList" 
+                [value]="meter">
+                  {{meter}}
+              </mat-option>
+          </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="fill"><input matInput #input type="number" placeholder="Serial Number" [(ngModel)]="serial"> </mat-form-field>
+          <button mat-flat-button color="primary"(click)="getMeterBySerial()">Get Meter</button>
+        </mat-tab>
+    
+      </mat-tab-group>
+      
+      
+        <table mat-table [dataSource]="metersTableResponse" class="mat-elevation-z8">        
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="serial">
+            <th mat-header-cell *matHeaderCellDef> Serial </th>
+            <td mat-cell *matCellDef="let element"> {{element.serial}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="firmwareVersion">
+            <th mat-header-cell *matHeaderCellDef> Firmware Version </th>
+            <td mat-cell *matCellDef="let element"> {{element.firmwareVersion}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef> State </th>
+            <td mat-cell *matCellDef="let element"> {{element.ip}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ip">
+            <th mat-header-cell *matHeaderCellDef> IP </th>
+            <td mat-cell *matCellDef="let element"> {{element.port}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="port">
+            <th mat-header-cell *matHeaderCellDef> Port </th>
+            <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="metersTabledisplayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: metersTabledisplayedColumns;"></tr>
+        </table>
+    
+    </mat-tab>
+
+  </mat-tab-group>
+  
+</div>
+
+<router-outlet></router-outlet>

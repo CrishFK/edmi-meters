@@ -11,6 +11,9 @@ services:
       MYSQL_ROOT_PASSWORD: Edmim3t3rs
     ports:
       - "3306:3306"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
 
   backend:
     build: ./edmi-meters-backend
@@ -19,6 +22,9 @@ services:
     ports:
       - "9084:80"
       - "9085:423"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
     depends_on:
       - "database"
 
@@ -29,7 +35,18 @@ services:
       - './edmi-meters-frontend:/usr/src/app' 
     ports: 
       - '4200:4200'
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.8
     command: > 
       bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
     depends_on:
       - "backend"
+
+networks:
+    vpcbr:
+      driver: bridge
+      ipam:
+       config:
+         - subnet: 10.5.0.0/16
+           gateway: 10.5.0.1
