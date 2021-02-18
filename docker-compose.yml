@@ -39,7 +39,7 @@ services:
       vpcbr:
         ipv4_address: 10.5.0.8
     command: > 
-      bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+      bash -c "npm install && ng serve --host 0.0.0.0 --port 4200 --proxy-config proxy.conf.json"
     depends_on:
       - "backend"
 
